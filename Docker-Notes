@@ -1,0 +1,71 @@
+# 📘 Docker Notes – DevOps Self Learning
+
+## 1. Docker Architecture
+
+### Runtime
+- The runtime is responsible for starting and stopping containers.  
+- There are two main types:  
+  - **runc** → Low-level runtime that directly works with containers.  
+  - **containerd** → Higher-level runtime that manages `runc` and enables container interaction with networking.  
+
+### Engine
+- The Docker Engine provides the core functionality of Docker.  
+- Workflow of execution:  
+  Docker Client → Docker Daemon (`dockerd`) → containerd → shim → runc → container  
+- **Docker Daemon (`dockerd`)**: Listens to API requests, manages objects like images, containers, and networks.  
+- **Docker Client**: The interface we use to interact with Docker (e.g., CLI, API).  
+
+### Orchestration
+- Orchestration allows management of multiple containers, scaling applications, and ensuring high availability.  
+
+### Shim
+- A shim ensures containers remain running even if the Docker Daemon goes down.  
+- This makes containers *daemonless*.  
+
+---
+
+## 2. Docker Workflow
+- A **Dockerfile** is used to define instructions for building an image.  
+- A **Docker Image** is a read-only template built from one or more layers.  
+- A **Docker Container** is a running instance of an image.  
+- **Registry**: Online storage (e.g., Docker Hub) where images are stored and shared.  
+- **Containers**: Lightweight, isolated environments that run applications.  
+
+---
+
+## 3. Docker Image Layers
+- Images are composed of multiple layers, each representing filesystem changes (like adding files or installing software).  
+- Layers are **immutable** and **read-only**.  
+- Shared layers are downloaded only once and reused across images, saving disk space.  
+- Layering enables **efficient caching, quick builds, and faster downloads**.  
+- When a container runs, Docker merges all layers into a single unified filesystem.  
+- This makes Docker lightweight and efficient.  
+
+---
+
+## 4. Dockerfile to Container
+1. Write a `Dockerfile` with instructions.  
+2. Build the image using the `docker build` process.  
+3. Run the container from the image.  
+
+Flow: **Dockerfile → Image → Container**  
+
+---
+
+## 5. Docker Concepts
+- **Images**: Blueprints for containers.  
+- **Containers**: Running instances of images.  
+- **Volumes**: Storage mechanism to persist data.  
+- **Networks**: Enable communication between containers or external systems.  
+
+---
+
+## 6. Useful Notes
+- Containers are isolated and portable, making them ideal for microservices.  
+- Orchestration tools (like Kubernetes, Docker Swarm) are used to manage containers at scale.  
+- The shim process ensures containers keep running independently of the Docker Daemon.  
+- Docker supports efficient system resource usage compared to traditional virtual machines.  
+
+---
+
+✅ These notes summarize the key concepts of Docker architecture, workflow, and image/container lifecycle in a simplified way for self-learning.
