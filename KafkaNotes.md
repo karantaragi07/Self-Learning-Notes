@@ -89,9 +89,8 @@ Message Flow:
 Old Kafka: uses ZooKeeper for metadata/leader election
 New Kafka: uses KRaft for internal metadata management
 
----
 
-## __consumer_offsets
+###  `__consumer_offsets`
 - Built-in topic storing last committed offsets for each partition.
 
 - Enables fault tolerance and replayability.
@@ -215,7 +214,7 @@ If heartbeats stop → trigger rebalance
 
 ## Replication & Fault Tolerance
 
-Replication Factor
+## Replication Factor
 - Number of copies per partition across brokers.
 
 - Minimum: 1, typical: 3
@@ -285,11 +284,41 @@ Related Settings:
 ## Kafka CLI Commands
 
 ```
+1. Start Zookeeper (if using old versions < Kafka 2.8)
 zookeeper-server-start.bat ..\..\config\zookeeper.properties
+
+2. Start Kafka Broker
 kafka-server-start.bat ..\..\config\server.properties
+
+3. List all Topics
+kafka-topics.sh --list --bootstrap-server localhost:9092
+
+4. Create Topics with 3 partiton and 1 replication factor
 kafka-topics.bat --create --topic my-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
+
+5. Describe a Topic -Shows details (leader, partitions, replication)
+kafka-topics.sh --describe --topic test-topic --bootstrap-server localhost:9092
+
+6. Produce Messages to a Topic - Opens a console where you can type messages, and they go to Kafka
 kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic
+
+7. Consume Messages from a Topic - Reads all messages from the beginning of the topic
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+
+8. List Consumer Groups (Shows all consumer groups)
+kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
+
+9. Describe a Consumer Group - Shows lag, partitions, offsets for the consumer group
+kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092
+
+10. Delete a Topic - Deletes a topic (if delete.topic.enable=true in config)
+kafka-topics.sh --delete --topic test-topic --bootstrap-server localhost:9092
+
+11. Check Kafka Broker Logs - Debugging broker issues
+tail -f logs/server.log
+
+12. Alter Topic (e.g., partitions) - Increases partitions of an existing topic.
+kafka-topics.sh --alter --topic test-topic --partitions 5 --bootstrap-server localhost:9092
 ```
 ---
 
@@ -409,5 +438,6 @@ Consumed message: hello-kafka
 - Kafka Connect and Streams provide integration & real-time processing.
 
 - CLI + Spring Boot examples demonstrate practical usage.
+
 
 
