@@ -292,13 +292,13 @@ zookeeper-server-start.bat ..\..\config\zookeeper.properties
 kafka-server-start.bat ..\..\config\server.properties
 
 3. List all Topics
-kafka-topics.sh --list --bootstrap-server localhost:9092
+kafka-topics.bat --list --bootstrap-server localhost:9092
 
 4. Create Topics with 3 partiton and 1 replication factor
 kafka-topics.bat --create --topic my-topic --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3
 
 5. Describe a Topic -Shows details (leader, partitions, replication)
-kafka-topics.sh --describe --topic test-topic --bootstrap-server localhost:9092
+kafka-topics.bat --describe --topic test-topic --bootstrap-server localhost:9092
 
 6. Produce Messages to a Topic - Opens a console where you can type messages, and they go to Kafka
 kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic
@@ -307,19 +307,19 @@ kafka-console-producer.bat --broker-list localhost:9092 --topic my-topic
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic my-topic --from-beginning
 
 8. List Consumer Groups (Shows all consumer groups)
-kafka-consumer-groups.sh --list --bootstrap-server localhost:9092
+kafka-consumer-groups.bat --list --bootstrap-server localhost:9092
 
 9. Describe a Consumer Group - Shows lag, partitions, offsets for the consumer group
-kafka-consumer-groups.sh --describe --group my-group --bootstrap-server localhost:9092
+kafka-consumer-groups.bat --describe --group my-group --bootstrap-server localhost:9092
 
 10. Delete a Topic - Deletes a topic (if delete.topic.enable=true in config)
-kafka-topics.sh --delete --topic test-topic --bootstrap-server localhost:9092
+kafka-topics.bat --delete --topic test-topic --bootstrap-server localhost:9092
 
 11. Check Kafka Broker Logs - Debugging broker issues
 tail -f logs/server.log
 
 12. Alter Topic (e.g., partitions) - Increases partitions of an existing topic.
-kafka-topics.sh --alter --topic test-topic --partitions 5 --bootstrap-server localhost:9092
+kafka-topics.bat --alter --topic test-topic --partitions 5 --bootstrap-server localhost:9092
 ```
 ---
 
