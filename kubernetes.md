@@ -14,20 +14,22 @@ It helps automate:
 
 But Kubernetes is **much more than an orchestrator** — it is the backbone for building **cloud-native applications**.
 
+- kubectl --> which communicates with control plane ----> control plane ----> worker nodes----> pod ---> scheduling unit
+
 ---
 
 ##  Why Kubernetes Is More Than Just an Orchestrator
 
 Traditional orchestrators only handle **container scheduling and deployment**, but Kubernetes provides a full ecosystem.
 
-| Capability | Description | Cloud-Native Purpose |
-|-------------|--------------|----------------------|
-| **Dynamic Deployment** | Deploy and manage containers automatically | Continuous delivery |
-| **Zero Downtime Updates** | Rolling and blue-green deployments | Resiliency |
-| **Auto Scaling** | Scales applications up or down | Elasticity |
-| **Self-Healing** | Restarts failed containers | Fault tolerance |
-| **Load Balancing** | Routes traffic to healthy Pods | High availability |
-| **Service Discovery** | Uses internal DNS for communication | Microservice connectivity |
+| Capability | Description | Cloud-Native Purpose                                              |
+|---------------------------|--------------|---------------------------------------------------|
+| **Dynamic Deployment**    | Deploy and manage containers automatically | Continuous delivery |
+| **Zero Downtime Updates** | Rolling and blue-green deployments | Resiliency                  |
+| **Auto Scaling**          | Scales applications up or down | Elasticity                      |
+| **Self-Healing**          | Restarts failed containers | Fault tolerance                     |
+| **Load Balancing**        | Routes traffic to healthy Pods | High availability               |
+| **Service Discovery**     | Uses internal DNS for communication | Microservice connectivity  |
 
 >  **Cloud-Native Applications** are designed to be modular, scalable, and resilient — Kubernetes provides the foundation to build them.  
 > Cloud-native ≠ Cloud computing; cloud-native focuses on *how* apps are designed, not *where* they run.
@@ -41,14 +43,66 @@ A **Kubernetes Cluster** = **Control Plane** + **Worker Nodes**
 - **Control Plane** → The brain that makes global decisions.  
 - **Worker Nodes** → Machines that actually run your applications (Pods).
 
+# Full Kubernetes Architecture (with Hardware & OS)
+
+    |------------------------------------------------------------------|
+    |                  Kubernetes Control Plane                        |
+    |------------------------------------------------------------------|
+    |       kube-apiserver, etcd, scheduler, controller-manager        |
+    |------------------------------------------------------------------|
+    |                  Kubernetes Worker Nodes                         |
+    |------------------------------------------------------------------|
+    |       kubelet, kube-proxy, container runtime (Docker, CRI-O)     |
+    |                     Pods (containers)                            |
+    |------------------------------------------------------------------|
+    |                  Operating System (Linux)                        |
+    |------------------------------------------------------------------|
+    |                  Physical or Virtual Hardware                    |
+    |                       CPU, RAM, Disk                             |
+    |------------------------------------------------------------------|
+
+
+
+In Simple Terms
+
+- Hardware → provides raw compute resources.
+
+- Linux OS → provides the environment & kernel-level features for containers.
+
+- Kubernetes → manages and orchestrates containers across many Linux-based nodes.
+
+---
+
 ## Kubernetes Cluster
 
 Control Plane + Worker Nodes
 
+The Control Plane is the brain of the Kubernetes cluster — it makes global decisions about the cluster (like scheduling, scaling, and maintaining desired state).
+It manages what should run and where it should run across worker nodes.
 
 ---
 
 ##  Control Plane Components
+
+               --------------------------------
+               |       Control Plane          |
+               |------------------------------|
+               |   kube-apiserver             |
+               |   etcd                       |
+               |   kube-scheduler             |
+               |   kube-controller-manager    |
+               |   cloud-controller-manager   |
+               --------------------------------
+                           |
+                           | (API Communication)
+                           v
+                --------------------------
+                |      Worker Nodes      |
+                |------------------------|
+                | kubelet  | kube-proxy  |
+                | Containers (Pods)      |
+                --------------------------
+
 
 |          Component                       |                            Description                                                     |
 |------------------------------------------|--------------------------------------------------------------------------------------------|
