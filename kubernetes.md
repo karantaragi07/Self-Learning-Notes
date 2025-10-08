@@ -16,8 +16,6 @@ It helps automate:
 
 But Kubernetes is **much more than an orchestrator** — it is the backbone for building **cloud-native applications**.
 
-- kubectl --> which communicates with control plane ----> control plane ----> worker nodes----> pod ---> scheduling unit
-
 ---
 
 ##  Why Kubernetes Is More Than Just an Orchestrator
@@ -40,10 +38,18 @@ Traditional orchestrators only handle **container scheduling and deployment**, b
 
 ##  Kubernetes Architecture Overview
 
+A Kubernetes cluster is a group of machines (physical or virtual) that work together to run containerized applications or we can say something which manages the control plane and worker node.
+
 A **Kubernetes Cluster** = **Control Plane** + **Worker Nodes**
 
-- **Control Plane** → The brain that makes global decisions.  
+- **Control Plane** → The brain that makes global decisions and manage your worker nodes.  
 - **Worker Nodes** → Machines that actually run your applications (Pods).
+
+- kubectl (which communicates with control plane) ----> control plane ----> worker nodes----> pod ---> scheduling unit
+
+kubectl is the command-line tool used to interact with your Kubernetes cluster.
+
+- There are two ways to interact with Kubernetes — Imperative and Declarative. The imperative approach uses direct commands like kubectl create or kubectl delete, while the declarative approach uses YAML manifests to define the desired state, which Kubernetes continuously maintains. Declarative is preferred for production and GitOps workflows.
 
 # Full Kubernetes Architecture (with Hardware & OS)
 
@@ -133,11 +139,13 @@ If you tell Kubernetes to run 5 Pods and one fails — the **controller-manager*
 
 ##  Pods
 
-- **Pod** is the **smallest deployable unit** in Kubernetes.  
+- **Pod** is the **smallest deployable unit** in Kubernetes or we can say just a scheduling unit.  
 - It wraps one or more containers that share the same **network namespace**, **storage volumes**, and **lifecycle**.  
 - Usually, one Pod = one application container.
 
 > Pods are ephemeral — when a Pod dies, a new one is created automatically by a higher-level controller (like a Deployment).
+
+worker node --> container runtime --> pod --> container
 
 ---
 
@@ -145,12 +153,12 @@ If you tell Kubernetes to run 5 Pods and one fails — the **controller-manager*
 
 1. Create your **microservice**  
 2. **Containerize** it (e.g., using Docker)  
-3. Place container inside a **Pod**  
-4. Deploy using a **Deployment** (which manages Pods)  
+3. Place container inside a **Pod** and then deploy these pods to controller.
+4. Deploy using a **Deployment** (which manages Pods) 
 
 Microservice → Container → Pod → Deployment → Cluster
 
-
+Controller are control loops that watch the state of your cluster, then make changes where needed.  fro example:- deployment controller
 
 ---
 
