@@ -2,6 +2,8 @@
 
 ##  Kubernetes — Self Learning Notes
 
+Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.
+
 Kubernetes (also known as **K8s**) is an **open-source container orchestration platform** developed by Google, derived from their internal project **Borg**.  
 In 2016, it was donated to the **Cloud Native Computing Foundation (CNCF)**.
 
