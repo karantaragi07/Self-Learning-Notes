@@ -125,6 +125,51 @@ If you tell Kubernetes to run 5 Pods and one fails — the **controller-manager*
 
 ---
 
+## Worker Node Architecture Diagram
+
+                    ┌──────────────────────────────────────────────┐
+                    │                Worker Node                   │
+                    │----------------------------------------------│
+                    │                                              │
+                    │   ┌──────────────────────────────────────┐   │
+                    │   │              Pods                    │   │
+                    │   │  (1 or more containers)              │   │
+                    │   │--------------------------------------│   │
+                    │   │  Container Runtime (Docker/CRI-O)    │   │
+                    │   └──────────────────────────────────────┘   │
+                    │                                              │
+                    │   ┌──────────────────────────────────────┐   │
+                    │   │             Kubelet                  │   │
+                    │   │  - Communicates with API Server      │   │
+                    │   │  - Ensures desired state of pods     │   │
+                    │   │  - Reports node & pod status         │   │
+                    │   └──────────────────────────────────────┘   │
+                    │                                              │
+                    │   ┌──────────────────────────────────────┐   │
+                    │   │             Kube-Proxy               │   │
+                    │   │  - Maintains network rules           │   │
+                    │   │  - Handles service discovery         │   │
+                    │   │  - Manages load balancing            │   │
+                    │   └──────────────────────────────────────┘   │
+                    │                                              │
+                    └──────────────────────────────────────────────┘
+
+## Interaction with Control Plane   
+
+          ┌───────────────────────────────┐
+          │        Control Plane          │
+          │  (API Server, Scheduler, etc) │
+          └──────────────┬────────────────┘
+                         │
+                         │
+               Communicates via REST API
+                         │
+          ┌──────────────┴────────────────┐
+          │         Worker Node           │
+          │   (Kubelet, Kube-Proxy, etc.) │
+          └───────────────────────────────┘
+
+
 ##  Worker Node Components
 
 |          Component                       |                            Description                                                       |
@@ -365,4 +410,61 @@ Observability helps detect performance issues, resource bottlenecks, and unhealt
 “You told me to run 5 applications. If one goes down, I’ll restart it.”
 — The Kubernetes Scheduler
 
+## End-to-End Kubernetes Workflow Summary
 
+- User Interaction → A developer interacts with the cluster using kubectl or YAML manifests to define the desired state (e.g., Deployments, Pods, Services).
+
+- API Server → The request first hits the Kube-API Server, which validates it and stores the desired state in etcd (the cluster’s key-value store).
+
+- Scheduler → The Kube-Scheduler watches for unscheduled Pods and selects an appropriate Worker Node based on resource availability, affinity rules, and constraints.
+
+- Kubelet on Worker Node → Once assigned, the Kubelet (agent on that node) pulls container images via the Container Runtime (Docker/containerd) and starts the containers inside Pods.
+
+- Container Runtime → The runtime runs the containers and manages their lifecycle, ensuring the application runs as expected.
+
+- Kube-Proxy → Handles networking rules, assigns IPs to Pods, and enables communication within and across nodes while exposing Services to the outside world.
+
+- Controller Manager → Continuously monitors the cluster, comparing the desired state (from etcd) with the current state. If something fails (e.g., a Pod crash), it triggers corrective actions such as recreating or rescheduling Pods.
+
+- Auto Healing & Scaling → Kubernetes automatically replaces failed Pods, scales deployments up or down, and maintains overall health to ensure system stability.
+
+- Service Exposure → The application becomes accessible via Services (ClusterIP, NodePort, LoadBalancer) or Ingress, enabling users to reach it from within or outside the cluster.
+
+- Continuous Reconciliation Loop → Kubernetes constantly checks and ensures that the actual cluster state always matches the desired state, providing self-healing, scalability, and high availability.
+
+```
+  [User / DevOps Engineer]
+          │
+          ▼
+   ┌───────────────────────┐
+   │   Kube-API Server     │
+   └─────────┬─────────────┘
+             │ (stores desired state)
+             ▼
+          [etcd Database]
+             │
+             ▼
+   ┌───────────────────────┐
+   │   Scheduler assigns   │
+   │   Pod to Worker Node  │
+   └─────────┬─────────────┘
+             ▼
+   ┌──────────────────────────────┐
+   │       Worker Node            │
+   │  ┌────────────────────────┐  │
+   │  │       Kubelet          │  │
+   │  │  Starts & monitors Pod │  │
+   │  └──────────┬─────────────┘  │
+   │             ▼                │
+   │  Container Runtime (Docker)  │
+   │  Kube-Proxy (Networking)     │
+   └──────────────────────────────┘
+             │
+             ▼
+      [Pods running app]
+             │
+             ▼
+     [Services expose it]
+
+```
+---
