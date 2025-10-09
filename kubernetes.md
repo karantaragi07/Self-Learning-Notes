@@ -490,7 +490,7 @@ Observability helps detect performance issues, resource bottlenecks, and unhealt
 ```
 ---
 
-** END TO END PROJECT WORKFLOW
+##  END TO END PROJECT WORKFLOW
 
 | **Step** | **Action**                    | **Command / File**                                                                     | **Purpose**                                       |
 | -------- | ----------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------- |
