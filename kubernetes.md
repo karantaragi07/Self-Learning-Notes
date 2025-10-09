@@ -489,3 +489,20 @@ Observability helps detect performance issues, resource bottlenecks, and unhealt
 
 ```
 ---
+
+** END TO END PROJECT WORKFLOW
+
+| **Step** | **Action**                    | **Command / File**                                                                     | **Purpose**                                       |
+| -------- | ----------------------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| 1        | Containerize project          | Create `Dockerfile` inside project folder                                              | Define how to build your app’s container          |
+| 2        | Build Docker image            | `docker build -t smart-email-assistant:latest .`                                       | Create container image locally                    |
+| 3        | Tag Docker image for registry | `docker tag smart-email-assistant:latest mydockerhubuser/smart-email-assistant:latest` | Prepare image for upload                          |
+| 4        | Push image to registry        | `docker push mydockerhubuser/smart-email-assistant:latest`                             | Make image available to Kubernetes                |
+| 5        | Create Kubernetes manifests   | Create `deployment.yaml` & `service.yaml` inside `k8s/` folder                         | Define how Kubernetes deploys and exposes the app |
+| 6        | Create Kubernetes cluster     | Local: `minikube start --driver=docker`<br>Cloud: provider commands                    | Spin up Kubernetes cluster                        |
+| 7        | Deploy manifests              | `kubectl apply -f k8s/deployment.yaml`<br>`kubectl apply -f k8s/service.yaml`          | Tell Kubernetes to create resources               |
+| 8        | Verify deployment             | `kubectl get pods`<br>`kubectl get svc`                                                | Check that pods/services are running              |
+| 9        | Access application            | `minikube service smart-email-assistant-service` or use LoadBalancer IP                | Access app in browser / API client                |
+| 10       | Monitor & scale               | `kubectl scale deployment smart-email-assistant --replicas=3`                          | Manage app resources and replicas                 |
+| 11       | CI/CD automation (optional)   | Setup GitHub Actions / Jenkins / GitLab CI                                             | Automate build, push, deploy on code changes      |
+
