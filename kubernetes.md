@@ -356,11 +356,30 @@ If a Pod or Node fails, Kubernetes automatically reschedules workloads — this 
 
 ```
 kubectl get pods
-kubectl get nodes
+kubectl delete pod <pod-name>
 kubectl describe pod <pod-name>
 kubectl logs <pod-name>
-kubectl apply -f deployment.yaml
+
+kubectl get nodes
+kubectl drain <node-name> --ignore-daemonsets --delete-local-data          [Drain the node (safely remove workloads)]
+kubectl delete node <node-name>
+
+kubectl get svc    [list of all services]
+kubectl delete svc <service-name>     [delete by service name]
+kubectl delete svc --all              [delete all services in namespace]
+
 kubectl delete -f service.yaml
+kubectl apply -f deployment.yaml
+
+kubectl delete svc <service-name> deployment <deployment-name>    [delete(service + deployment + pods)]
+
+kubectl config current-context
+
+kubectl create deployment <services> --image=kicbase/echo-server:1.0
+kubectl expose deployment <services> --type=NodePort --port=8080
+
+kubectl port-forward service/hello-minikube 7080:8080
+
 ```
 ---
 
