@@ -355,6 +355,8 @@ If a Pod or Node fails, Kubernetes automatically reschedules workloads — this 
 ## Common commands
 
 ```
+kubectl get all                            [seeing everything running in your namespace]
+
 kubectl get pods
 kubectl delete pod <pod-name>
 kubectl describe pod <pod-name>
@@ -364,7 +366,7 @@ kubectl get nodes
 kubectl drain <node-name> --ignore-daemonsets --delete-local-data          [Drain the node (safely remove workloads)]
 kubectl delete node <node-name>
 
-kubectl get svc    [list of all services]
+kubectl get svc                       [list of all services]
 kubectl delete svc <service-name>     [delete by service name]
 kubectl delete svc --all              [delete all services in namespace]
 
